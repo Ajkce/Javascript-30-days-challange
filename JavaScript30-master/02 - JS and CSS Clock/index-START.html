@@ -12,6 +12,8 @@
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
+        <div class="dot"></div>
+
       </div>
     </div>
 
@@ -62,11 +64,47 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform: rotate(90deg);
+      transform-origin: 100%;
+      transition-timing-function: cubic-bezier(0, 1.67, 0.58, 1);
+    }
+    .dot{
+      width: 5px;
+      height: 5px;
+      color: black;
+      background: black;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%);
+    
+      border-radius: 50%;
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    const setDate = () => {
+      const now = new Date();
+      const seconds = now.getSeconds()
+      const minutes = now.getMinutes();
+      const hour = now.getHours()
+      const secondsDegree = (seconds / 60) * 360 + 90
+      const minutesDegree = (minutes / 60) * 360 + 90
+      const hourDegree = (hour / 60) * 360 + 90
+      secondHand.style.transform = `rotate(${secondsDegree}deg)`
+      minuteHand.style.transform = `rotate(${minutesDegree}deg)`
+      hourHand.style.transform = `rotate(${hourDegree}deg)`
+    }
+    setInterval(() => {
+      setDate()
+      
+    }, 1000);
+    
 
 
   </script>
