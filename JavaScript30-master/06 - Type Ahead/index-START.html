@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State" />
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+    <script type="module">
+      const endpoint =
+        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+      let cities = [];
 
-  <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
-      <li>Filter for a city</li>
-      <li>or a state</li>
-    </ul>
-  </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+      const fetchdata = async () => {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        cities.push(...data);
+      };
 
-</script>
-</body>
+      const filterCities = (cities, words) => {
+        return cities.filter((data) => {
+          const regex = new RegExp(words, "gi");
+          return data.city.match(regex) || data.state.match(regex);
+        });
+      };
+
+      function displayMatches(e) {
+        const data = filterCities(cities, e.target.value);
+      
+        const html = data.map((item) => {
+          const regex = new RegExp(this.value, 'gi');
+          const cityName = item.city.replace(regex, `<span class='hl'>${this.value}</span>`)
+          const StateName = item.state.replace(regex, `<span class='hl'>${this.value}</span>`)
+          return `
+          <li>
+            <span class='name'>${cityName}, ${StateName}</span>
+            <span class='population'>${item.population}</span>
+            </li>
+          `;
+        }).join('')
+        list.innerHTML = html;
+      }
+
+      const searchBox = document.querySelector(".search");
+      const list = document.querySelector(".suggestions");
+
+      searchBox.addEventListener("change", displayMatches);
+      searchBox.addEventListener("keyup", displayMatches);
+
+      fetchdata();
+    </script>
+  </body>
 </html>
