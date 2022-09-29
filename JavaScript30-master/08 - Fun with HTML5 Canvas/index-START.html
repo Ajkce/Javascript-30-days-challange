@@ -1,56 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>HTML5 Canvas</title>
-  </head>
-  <body>
-    <canvas id="draw" width="800" height="800"></canvas>
-    <script>
-      const canvas = document.querySelector("#draw");
-      const ctx = canvas.getContext("2d");
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      
+      .svg {
+        height: 500px;
+        width: 100%;
+        background-color: white;
 
-      ctx.lineWidth = 150;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.strokeStyle = "#BADA55";
-      ctx.lineJoin = "round";
-      ctx.lineCap = "round";
+
+
+        .quote1Heart {
+        stroke-dashoffset: 0;
+        stroke-dasharray: 1000;
+        fill: none;
+        stroke: #007bff;
+        stroke-width: 15;
+      }
+
     
 
-      let isDrawing = false;
-      let lastX = 0;
-      let lastY = 0;
-      let hue = 0
-
-      function draw(e) {
-        if (!isDrawing) return;
-        
-        ctx.beginPath();
-        ctx.lineWidth = 50;
-        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`
-
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-        [lastX, lastY] = [e.offsetX, e.offsetY];
-        hue++
+      #mySVG {
+        width: 100%;
+        height: 210px;
+        margin-left: -50px;
       }
-
-      canvas.addEventListener("mousemove", draw);
-      canvas.addEventListener("mousedown", (e) => {
-        isDrawing = true;
-        [lastX, lastY] = [e.offsetX, e.offsetY];
-      });
-      canvas.addEventListener("mouseup", () => (isDrawing = false));
-      canvas.addEventListener("mouseout", () => (isDrawing = false));
-    </script>
-
-    <style>
-      html,
-      body {
-        margin: 0;
       }
+     
+
+      
     </style>
+  </head>
+  <body>
+    <div class="before"></div>
+    <div class="svg">
+      <svg id="mySVG" x="0" y="0" viewBox="0 0 591.7 313.3">
+        <polyline
+          id="quote1Heart"
+          class="quote1Heart"
+          points="191.9,118.2 128,7.3 463.8,7.3 295.9,298 233.2,189.5"
+          style="stroke-dashoffset: 0px"
+        ></polyline>
+        <rect
+          x="170"
+          y="112.9"
+          class="quoteTextBG"
+          width="93"
+          height="82"
+        ></rect>
+        <rect
+          x="370"
+          y="43.9"
+          class="quoteTextBG"
+          width="93"
+          height="82"
+        ></rect>
+        <text
+          x="239.2858"
+          y="109.9107"
+          class="quoteText quote1TextTop"
+          data-svg-origin="239.28579711914062 51.760318756103516"
+          transform="matrix(1,0,0,1,0,0)"
+        >
+          “DO WHAT YOU LOVE
+        </text>
+        <text
+          x="-0.7142"
+          y="179.7315"
+          class="quoteText quote1TextBottom"
+          data-svg-origin="-0.7142000198364258 121.58112335205078"
+          transform="matrix(1,0,0,1,0,0)"
+        >
+          LOVE WHAT YOU DO”
+        </text>
+      </svg>
+    </div>
+    <div class="after"></div>
+
+    <script>
+      // Get the id of the <path> element and the length of <path>
+      var triangle = document.getElementById("quote1Heart");
+      var length = triangle.getTotalLength();
+      console.log(length);
+      // The start position of the drawing
+      triangle.style.strokeDasharray = length;
+
+      // Hide the triangle by offsetting dash. Remove this line to show the triangle before scroll draw
+
+      // Find scroll percentage on scroll (using cross-browser properties), and offset dash same amount as percentage scrolled
+
+      window.addEventListener("scroll", getPercentOfView);
+
+      function getPercentOfView() {
+        const element = document.getElementById("mySVG");
+        const viewTop = window.pageYOffset;
+
+        const viewBottom = viewTop + window.innerHeight;
+        const rect = element.getBoundingClientRect();
+
+        const elementTop = rect.top + viewTop;
+
+        const elementBottom = elementTop + rect.height;
+
+        let percentage = 0;
+
+        if (elementTop >= viewBottom || elementBottom <= viewTop) {
+          // heigher or lower than viewport
+          percentage = 0;
+        } else if (elementTop <= viewTop) {
+          // element is completely in viewport and bigger than viewport
+          percentage = 1;
+        } else if (elementTop <= viewBottom) {
+          // intersects viewport top
+
+          percentage = (viewBottom - elementTop) / window.innerHeight;
+        }
+
+        var draw = length * percentage;
+
+        // Reverse the drawing (when scrolling upwards)
+        triangle.style.strokeDashoffset = length - draw;
+      }
+    </script>
   </body>
 </html>
