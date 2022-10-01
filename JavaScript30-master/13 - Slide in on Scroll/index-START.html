@@ -58,6 +58,30 @@
       };
     }
 
+
+    const images = document.querySelectorAll('.slide-in')
+
+    const slider = (e) => {
+      images.forEach((image) => {
+
+        //halfway whrough the image
+        const peekIn = (window.scrollY + window.innerHeight )- image.height / 2
+        const element = image.getBoundingClientRect();
+       const imagebtn = image.offsetTop + image.height;
+
+       const ishalfShown= peekIn > image.offsetTop;
+       const isNotScrolled = window.screenY < imagebtn
+       if(ishalfShown && isNotScrolled){
+        image.classList.add('active')
+       }else{
+        image.classList.remove('active')
+       }
+        
+      })
+    }
+window.addEventListener('scroll', slider)
+
+    
   </script>
 
   <style>
