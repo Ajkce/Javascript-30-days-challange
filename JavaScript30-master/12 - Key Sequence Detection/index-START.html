@@ -7,6 +7,21 @@
 </head>
 <body>
 <script>
+
+let array = []
+  const something = (e) => {
+ 
+    array.push(e.key)
+    array.splice(-7, array.length - 6);
+   
+    
+    if(array.join('') === 'wesbos'){
+      console.log('You did it')
+    }
+
+  }
+
+document.addEventListener('keyup', something)
 </script>
 </body>
 </html>
