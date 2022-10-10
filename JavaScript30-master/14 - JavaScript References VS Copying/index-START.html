@@ -8,12 +8,16 @@
 
   <script>
     // start with strings, numbers and booleans
-
+    let age = 100;
+    let age2 = age;
+    age = 200;
+    console.log(age, age2)
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
-
+const team = players;
+console.log(players, team);
     // You might think we can just do something like this:
 
     // however what happens when we update that array?
@@ -45,7 +49,8 @@
     // and think we make a copy:
 
     // how do we take a copy instead?
-
+const cap2 = Object.assign({}, person, {number:99})
+console.log(cap2);
     // We will hopefully soon see the object ...spread
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
