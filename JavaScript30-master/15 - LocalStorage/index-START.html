@@ -88,7 +88,8 @@
       }
 
       function toggleDone(e){
-        if(!e.target.matches('input')) return
+        
+        if(e.target.type != 'checkbox') return
         const el = e.target;
         const index = el.dataset.index;
         
